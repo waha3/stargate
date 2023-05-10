@@ -1,10 +1,7 @@
 import { Builder, By } from "selenium-webdriver";
 import { ServiceBuilder, Options } from "selenium-webdriver/chrome.js";
 
-const options = new Options();
-// const service = new ServiceBuilder("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome");
 const service = new ServiceBuilder("/Users/hanxin/chromedriver");
-
 const driver = new Builder().forBrowser("chrome").setChromeService(service).build();
 
 async function run() {

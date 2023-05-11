@@ -1,62 +1,55 @@
-import { Builder, By } from "selenium-webdriver";
+import { Builder, By, until } from "selenium-webdriver";
 import { ServiceBuilder } from "selenium-webdriver/chrome.js";
 
 const service = new ServiceBuilder("/Users/hanxin/chromedriver");
 const driver = new Builder().forBrowser("chrome").setChromeService(service).build();
 
-// 模拟人类的行为 区间在 页面加载好的 [5 - 10]s内
+// 模拟人类的行为 区间在 页面加载好的 [5 - 15]s内
 function getRandomInt(min: number = 5, max: number = 15): number {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return (Math.floor(Math.random() * (max - min + 1)) + min) * 1000;
+  // return (Math.floor(Math.random() * (max - min + 1)) + min) * 1000;
+  return 1000;
 }
 
-async function run() {
+async function inital() {
+  await driver.manage().setTimeouts({ implicit: 10000 });
+  // await driver.manage().window().setSize(1000, 800);
+}
+async function installMetaMask() {
+  await driver.get("https://metamask.io/");
+
+  let meta_mask_download_btn = await driver.findElement(
+    By.xpath('//a[contains(@class, "iFIkyk")]')
+  );
+  await driver.sleep(getRandomInt());
+  await meta_mask_download_btn.click();
+
+  let add_to_chrome_btn = await driver.findElement(
+    By.xpath('//*[contains(text(), "添加至 Chrome")]')
+  );
+  await driver.sleep(getRandomInt());
+  await add_to_chrome_btn.click();
+}
+
+async function stargate() {
   await driver.get("https://stargate.finance/transfer");
-  await driver.manage().setTimeouts({ implicit: 5000 });
-  let title = await driver.getTitle();
-  console.log("title is", title);
-
-  // "//*[contains(@class, 'your-css-class') and contains(text(), 'Element Text')]"
-
   let connectWalletButton = await driver.findElement(
     By.xpath('//*[contains(@class, "MuiButton-label") and contains(text(), "Connect Wallet")]')
   );
-
-  console.log("connectWalletButton is ", connectWalletButton);
-
   await driver.sleep(getRandomInt());
+  await connectWalletButton.click();
 
-  connectWalletButton.click();
-
-  console.log("connectWalletButton is ", connectWalletButton);
-
-  let metaMaskButton = await driver.findElement(By.css(".MuiBox-root.jss1842 > :first-child"));
-
+  let metaMaskButton = await driver.findElement(
+    By.xpath('//p[contains(@class, "MuiTypography-body1") and contains(text(), "Metamask")]')
+  );
   await driver.sleep(getRandomInt());
-
   await metaMaskButton.click();
+}
 
-  // metamask 站点 下载 钱包
-  let metaMaskDownloadBtn = driver.findElement(By.css(".Button__ButtonWrapper-sc-5os99m-1"));
-
-  await driver.sleep(getRandomInt());
-
-  await metaMaskDownloadBtn.click();
-
-  // let submitButton = await driver.findElement(By.css("button"));
-
-  // await textBox.sendKeys("Selenium");
-  // await submitButton.click();
-
-  // let message = await driver.findElement(By.id("message"));
-
-  // let value = await message.getText();
-
-  console.log("title is ", title);
-  // console.log("value is ", value);
-
-  // await driver.quit();
+async function run() {
+  await inital();
+  await installMetaMask();
 }
 
 run();

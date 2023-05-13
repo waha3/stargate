@@ -25,11 +25,12 @@ async function installMetaMask() {
   await driver.sleep(getRandomInt());
   await meta_mask_download_btn.click();
 
-  let add_to_chrome_btn = await driver.findElement(
-    By.xpath('//*[contains(text(), "添加至 Chrome")]')
-  );
-  await driver.sleep(getRandomInt());
-  await add_to_chrome_btn.click();
+  let add_to_chrome_btn = await driver.wait(until.elementLocated(By.css(".PNF6le")));
+
+  // let add_to_chrome_btn = await driver.findElement(By.css("PNF6le"));
+  // await driver.sleep(getRandomInt());
+  // await add_to_chrome_btn.click();
+  console.log("add to chrome", add_to_chrome_btn);
 }
 
 async function stargate() {

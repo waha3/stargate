@@ -9,10 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "robotjs": "0.6.0",
     "selenium-webdriver": "4.8.2"
   },
   "devDependencies": {
     "@types/selenium-webdriver": "4.1.13",
-    "prettier": "^2.8.7"
+    "prettier": "2.8.7"
   }
 }

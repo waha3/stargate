@@ -24,7 +24,7 @@ async function installMetaMask(driver: WebDriver) {
   await driver.findElement(By.xpath('//a[contains(@class, "iFIkyk")]')).click();
 
   // 等待15s 让metamask插件下载完成 （可能会超过这个时间根据自己网络手动调节）
-  await driver.sleep(20000);
+  await driver.sleep(10 * 1000);
 
   // 确认安装 metamask （浏览器原生的元素）
   robot.moveMouseSmooth(1120, 220);
@@ -115,7 +115,24 @@ async function stargate(driver: WebDriver) {
       By.xpath('//p[contains(@class, "MuiTypography-body1") and contains(text(), "Metamask")]')
     )
     .click();
+
+  await connectToMetaMask(driver);
+}
+
+async function connectToMetaMask(driver: WebDriver) {
   await driver.sleep(getRandomInt());
+
+  let windows = await driver.getAllWindowHandles();
+  await driver.switchTo().window(windows[windows.length - 1]);
+
+  await driver.sleep(getRandomInt());
+  // next button
+  await driver.findElement(By.xpath('//button[contains(text(), "Next")]')).click();
+  // connect button
+  await driver.findElement(By.css('button[data-testid="page-container-footer-next"]')).click();
+
+  windows = await driver.getAllWindowHandles();
+  await driver.switchTo().window(windows[windows.length - 2]);
 }
 
 async function run() {
